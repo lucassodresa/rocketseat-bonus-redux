@@ -7,6 +7,7 @@ import {
 import { IState } from "../..";
 import api from "../../../services/api";
 import { AxiosResponse } from "axios";
+import { ActionsTypes } from "./types";
 
 type CheckProductStockRequest = ReturnType<typeof addProductToCartRequest>;
 interface IStockReponse {
@@ -28,13 +29,13 @@ function* checkProductStock({ payload }: CheckProductStockRequest) {
     `stock/${product.id}`
   );
 
-  if (availableStockResponse.data.quantity > currentQuantity) {
-    yield put(addProductToCartSuccess(product));
-  } else {
-    yield put(addProductToCartFailure(product.id));
-  }
+  yield put(
+    availableStockResponse.data.quantity > currentQuantity
+      ? addProductToCartSuccess(product)
+      : addProductToCartFailure(product.id)
+  );
 }
 
 export default all([
-  takeLatest("ADD_PRODUCT_TO_CART_REQUEST", checkProductStock),
+  takeLatest(ActionsTypes.addProductToCartRequest, checkProductStock),
 ]);
