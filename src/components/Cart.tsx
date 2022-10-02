@@ -1,11 +1,11 @@
+import React from 'react'
 import { useSelector } from "react-redux"
 import { IState } from "../store"
 import { ICartItem } from "../store/modules/cart/types"
 
-const Cart = () => {
 
-  const cart = useSelector<IState, ICartItem[]>(state =>  state.cart.items )
-  console.log("🚀 ~ file: Cart.tsx ~ line 8 ~ Cart ~ cart", cart)
+const Cart = () => {
+  const cart = useSelector<IState, ICartItem[]>(({cart}) =>  cart.items )
  
   return (
     <table>
